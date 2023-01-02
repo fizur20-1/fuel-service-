@@ -1,0 +1,57 @@
+create table fuel.authority
+(
+    id   bigint auto_increment
+        primary key,
+    name varchar(50) null
+);
+
+create table fuel.cart
+(
+    id         bigint auto_increment
+        primary key,
+    cart_id    varchar(20) not null,
+    product_id bigint      not null,
+    constraint cart_product_product_id_fk
+        foreign key (product_id) references fuel.product (product_id)
+);
+
+create table fuel.orders
+(
+    id          bigint                        not null
+        primary key,
+    customer_id bigint                        not null,
+    total_cost  double                        not null,
+    timestamp   varchar(50)                   not null,
+    status      varchar(20) default 'PENDING' not null
+);
+
+create table fuel.product
+(
+    product_id bigint auto_increment
+        primary key,
+    name       varchar(50)          not null,
+    price      double               not null,
+    in_stock   tinyint(1) default 1 not null
+);
+
+create table fuel.user
+(
+    id         bigint auto_increment
+        primary key,
+    username   varchar(50)  not null,
+    password   varchar(100) not null,
+    phone      varchar(50)  not null,
+    is_enabled tinyint(1)   not null
+);
+
+create table fuel.user_authority_map
+(
+    id           bigint auto_increment
+        primary key,
+    user_id      bigint null,
+    authority_id bigint null,
+    constraint user_authority_map_authority_id_fk
+        foreign key (authority_id) references fuel.authority (id),
+    constraint user_authority_map_user_id_fk
+        foreign key (user_id) references fuel.user (id)
+);
